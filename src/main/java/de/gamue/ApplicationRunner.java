@@ -10,8 +10,12 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.stream.Stream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ApplicationRunner {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationRunner.class);
 
     private static final String PATH = "/Users/jganzenmller/Downloads";
 
@@ -31,6 +35,7 @@ public class ApplicationRunner {
                         focalLengthToAmount.put(focalLength, amount);
                     } catch (ImageProcessingException | IOException | MetadataException e) {
                         // no image file or no exif data present
+                        LOGGER.debug("could not read exif data from file: " + file.toString(), e);
                     }
                 });
         files.close();
@@ -38,7 +43,6 @@ public class ApplicationRunner {
         for (Entry<Float, Integer> lengthToAmount : focalLengthToAmount.entrySet()) {
             System.out.println(lengthToAmount.getKey() + "mm - " + lengthToAmount.getValue());
         }
-
     }
 
 }
