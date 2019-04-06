@@ -1,10 +1,11 @@
 package de.gamue.fla;
 
+import de.gamue.fla.output.ConsoleWriter;
+import de.gamue.fla.output.CsvWriter;
+import de.gamue.fla.output.OutputWriter;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class ApplicationRunner {
 
@@ -20,9 +21,13 @@ public class ApplicationRunner {
             FocalLengthAnalyzer focalLengthAnalyzer = new FocalLengthAnalyzer();
             Map<Float, Integer> focalLengthToAmount = focalLengthAnalyzer.getFocalLengthUsage(directory);
 
-            for (Entry<Float, Integer> lengthToAmount : focalLengthToAmount.entrySet()) {
-                System.out.println(lengthToAmount.getKey() + "mm - " + lengthToAmount.getValue());
+            OutputWriter output;
+            if (config.getOutputFile().isBlank()) {
+                output = new ConsoleWriter();
+            } else {
+                output = new CsvWriter(config.getOutputFile());
             }
+            output.write(focalLengthToAmount);
         }
         LOGGER.info("Application ended.");
     }

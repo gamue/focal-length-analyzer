@@ -9,8 +9,10 @@ Background was to check which focal length I most commonly work with and use thi
 Set values in `CliConfig` and execute the `ApplicationRunner`-class. 
 
 ### Compilation
-You can use a compiled version of this project from command line by executing:
+You can use a compiled version of this project via command line by executing:
 ```
-java -jar focal-length-analyzer-1.0.jar -d [DIRECTORY]
+java -jar focal-length-analyzer-1.0.jar -d DIRECTORY_TO_SCAN [-o OUTPUT_FILE]
 ```
+
+If no output file is defined the result will be written to the console
 

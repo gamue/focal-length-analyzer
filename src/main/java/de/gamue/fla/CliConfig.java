@@ -15,6 +15,9 @@ public class CliConfig {
     @Option(name = "-d", usage = "directory which should be scanned", required = true)
     private String directory;
 
+    @Option(name = "-o", usage = "output file, if not set data will printed on console.")
+    private String outputFile;
+
 
     public static CliConfig read(final String... args) {
         LOGGER.info("CLI arguments: {}", Arrays.toString(args));
@@ -41,4 +44,7 @@ public class CliConfig {
         return directory;
     }
 
+    public String getOutputFile() {
+        return outputFile;
+    }
 }
