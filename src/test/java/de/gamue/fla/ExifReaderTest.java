@@ -1,4 +1,4 @@
-package de.gamue;
+package de.gamue.fla;
 
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.MetadataException;
@@ -8,6 +8,10 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 class ExifReaderTest {
 

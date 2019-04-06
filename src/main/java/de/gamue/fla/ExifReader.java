@@ -1,4 +1,4 @@
-package de.gamue;
+package de.gamue.fla;
 
 import com.drew.imaging.ImageMetadataReader;
 import com.drew.imaging.ImageProcessingException;

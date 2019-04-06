@@ -1,4 +1,4 @@
-package de.gamue;
+package de.gamue.fla;
 
 import java.io.StringWriter;
 import java.util.Arrays;
