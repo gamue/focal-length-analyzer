@@ -2,15 +2,18 @@ package de.gamue;
 
 import com.drew.imaging.ImageProcessingException;
 import com.drew.metadata.MetadataException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Stream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.util.stream.Collectors;
 
 public class FocalLengthAnalyzer {
 
@@ -23,13 +26,14 @@ public class FocalLengthAnalyzer {
      * @param directory path to the directory that should be checked
      * @return map that holds the focal length as key and usage count as value
      */
-    public Map<Float, Integer> getFocalLengthUsage(String directory) throws IOException {
+    public Map<Float, Integer> getFocalLengthUsage(String directory) {
         ExifReader exifReader = new ExifReader();
         Map<Float, Integer> focalLengthToAmount = new TreeMap<>();
 
-        Stream<Path> files = Files.walk(Paths.get(directory));
-        files.filter(Files::isRegularFile)
-            .forEach(
+        List<Path> files = getFilesToCheck(directory);
+        LOGGER.info("found {} files in directories.", files.size());
+
+        files.forEach(
                 file -> {
                     try {
                         float focalLength = exifReader.getFocalLength(file.toFile());
@@ -41,9 +45,16 @@ public class FocalLengthAnalyzer {
                         LOGGER.debug("could not read exif data from file: " + file.toString(), e);
                     }
                 });
-        files.close();
 
         return focalLengthToAmount;
     }
 
+    private List<Path> getFilesToCheck(String directory) {
+        try {
+            return Files.walk(Paths.get(directory)).filter(Files::isRegularFile).collect(Collectors.toList());
+        } catch (IOException e) {
+            LOGGER.error("Error while resolving files to check.");
+            return Collections.emptyList();
+        }
+    }
 }

@@ -1,12 +1,17 @@
 package de.gamue;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class ApplicationRunner {
 
-    public static void main(String[] args) throws IOException {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationRunner.class);
+
+    public static void main(String[] args) {
+        LOGGER.info("Application started.");
 
         CliConfig config = CliConfig.read(args);
 
@@ -19,6 +24,7 @@ public class ApplicationRunner {
                 System.out.println(lengthToAmount.getKey() + "mm - " + lengthToAmount.getValue());
             }
         }
+        LOGGER.info("Application ended.");
     }
 
 }
