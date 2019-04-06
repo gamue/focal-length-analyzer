@@ -20,10 +20,12 @@ ext {
 dependencies {
     implementation 'com.drewnoakes:metadata-extractor:2.11.0'
 
+    implementation 'args4j:args4j:2.33'
+
     implementation "org.apache.logging.log4j:log4j-api:${slf4jVersion}"
     implementation "org.apache.logging.log4j:log4j-core:${slf4jVersion}"
     implementation "org.apache.logging.log4j:log4j-slf4j-impl:${slf4jVersion}"
-    
+
     testCompile "org.junit.jupiter:junit-jupiter-api:${junitVersion}"
     testCompile "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
     testCompile "org.junit.jupiter:junit-jupiter-params:${junitVersion}"
@@ -40,5 +42,16 @@ test {
         events 'FAILED', 'SKIPPED', 'PASSED'
         showStandardStreams = false
         exceptionFormat = 'full'
+    }
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "de.gamue.ApplicationRunner"
+    }
+    from {
+        (configurations.runtimeClasspath).collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
     }
 }
