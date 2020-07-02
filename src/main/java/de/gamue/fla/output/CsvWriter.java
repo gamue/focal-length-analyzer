@@ -20,7 +20,8 @@ public class CsvWriter implements OutputWriter {
 
     @Override
     public void write(Map<Float, Integer> focalLengthToAmount) {
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder(focalLengthToAmount.size() * 10);
+        stringBuilder.append("Focal length").append(";").append("Count").append('\n');
         focalLengthToAmount.entrySet().stream()
                 .forEach(e -> stringBuilder.append(e.getKey()).append(";").append(e.getValue()).append('\n'));
 

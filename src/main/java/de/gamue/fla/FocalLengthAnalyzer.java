@@ -42,6 +42,8 @@ public class FocalLengthAnalyzer {
                     } catch (ImageProcessingException | IOException | MetadataException e) {
                         // no image file or no exif data present
                         LOGGER.debug("could not read exif data from file: " + file.toString(), e);
+                    } catch (Exception e) {
+                        LOGGER.error("error while reading file: " + file.toString(), e);
                     }
                 });
 
