@@ -9,6 +9,12 @@ public class FocalLengthResult {
 
     private Map<Float, Integer> focalLengthToAmount = new TreeMap<>();
 
+    private String cameraName;
+
+    public FocalLengthResult(String cameraName) {
+        this.cameraName = cameraName;
+    }
+
     public int getAmount(float focalLength) {
         return focalLengthToAmount.getOrDefault(focalLength, 0);
     }

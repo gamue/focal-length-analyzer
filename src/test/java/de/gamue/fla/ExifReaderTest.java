@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 class ExifReaderTest {
 
     private ExifReader reader;
@@ -20,8 +22,8 @@ class ExifReaderTest {
 
     @Test
     void getFocalLength() throws ImageProcessingException, IOException, MetadataException {
-        float focalLength = reader.getFocalLength(getTestImage());
-        Assertions.assertEquals(46, focalLength);
+        float focalLength = reader.getFocalLength(getTestImageDslr());
+        assertEquals(46, focalLength);
     }
 
     @Test
@@ -30,7 +32,28 @@ class ExifReaderTest {
         Assertions.assertThrows(FileNotFoundException.class, () -> reader.getFocalLength(image));
     }
 
-    private File getTestImage() {
+    @Test
+    void getFocalLength_NoExifData() {
+        File image = getTestImageBlank();
+        Assertions.assertThrows(MetadataException.class, () -> reader.getFocalLength(image));
+    }
+
+    @Test
+    void getCameraName() throws ImageProcessingException, IOException, MetadataException {
+        assertEquals("NIKON D7000", reader.getCameraName(getTestImageDslr()));
+        assertEquals("iPhone 6", reader.getCameraName(getTestImagePhone()));
+        Assertions.assertNull(reader.getCameraName(getTestImageBlank()));
+    }
+
+    private File getTestImageDslr() {
         return new File(getClass().getClassLoader().getResource("iceland_01.jpg").getFile());
+    }
+
+    private File getTestImagePhone() {
+        return new File(getClass().getClassLoader().getResource("jordan_211.jpg").getFile());
+    }
+
+    private File getTestImageBlank() {
+        return new File(getClass().getClassLoader().getResource("blank.jpg").getFile());
     }
 }

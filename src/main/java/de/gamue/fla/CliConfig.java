@@ -18,6 +18,8 @@ public class CliConfig {
     @Option(name = "-o", usage = "output file, if not set data will printed on console.")
     private String outputFile = "";
 
+    @Option(name = "-s", usage = "if set to true, the result will be split by used camera (default: false).")
+    private boolean splitByCamera = false;
 
     public static CliConfig read(final String... args) {
         log.info("CLI arguments: {}", Arrays.toString(args));
