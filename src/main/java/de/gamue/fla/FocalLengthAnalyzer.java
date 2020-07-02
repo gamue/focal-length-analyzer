@@ -8,8 +8,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,9 +21,9 @@ public class FocalLengthAnalyzer {
      * @param directory path to the directory that should be checked
      * @return map that holds the focal length as key and usage count as value
      */
-    public Map<Float, Integer> getFocalLengthUsage(String directory) {
+    public FocalLengthResult getFocalLengthUsage(String directory) {
         ExifReader exifReader = new ExifReader();
-        Map<Float, Integer> focalLengthToAmount = new TreeMap<>();
+        FocalLengthResult result = new FocalLengthResult();
 
         List<Path> files = getFilesToCheck(directory);
         log.info("found {} files in directories.", files.size());
@@ -34,9 +32,7 @@ public class FocalLengthAnalyzer {
                 file -> {
                     try {
                         float focalLength = exifReader.getFocalLength(file.toFile());
-                        Integer amount = focalLengthToAmount.getOrDefault(focalLength, 0);
-                        amount++;
-                        focalLengthToAmount.put(focalLength, amount);
+                        result.increaseAmount(focalLength);
                     } catch (ImageProcessingException | IOException | MetadataException e) {
                         // no image file or no exif data present
                         log.debug("could not read exif data from file: " + file.toString(), e);
@@ -45,7 +41,7 @@ public class FocalLengthAnalyzer {
                     }
                 });
 
-        return focalLengthToAmount;
+        return result;
     }
 
     private List<Path> getFilesToCheck(String directory) {

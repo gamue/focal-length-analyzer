@@ -1,8 +1,8 @@
 package de.gamue.fla.output;
 
-import java.util.Map;
+import de.gamue.fla.FocalLengthResult;
 
 public interface OutputWriter {
 
-    void write(Map<Float, Integer> focalLengthToAmount);
+    void write(FocalLengthResult focalLengthToAmount);
 }

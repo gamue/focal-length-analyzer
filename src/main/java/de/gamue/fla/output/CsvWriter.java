@@ -1,5 +1,6 @@
 package de.gamue.fla.output;
 
+import de.gamue.fla.FocalLengthResult;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -15,7 +16,8 @@ public class CsvWriter implements OutputWriter {
     private String outputFile;
 
     @Override
-    public void write(Map<Float, Integer> focalLengthToAmount) {
+    public void write(FocalLengthResult result) {
+        Map<Float, Integer> focalLengthToAmount = result.getFocalLengthToAmount();
         StringBuilder stringBuilder = new StringBuilder(focalLengthToAmount.size() * 10);
         stringBuilder.append("Focal length").append(";").append("Count").append('\n');
         focalLengthToAmount.entrySet().stream()
