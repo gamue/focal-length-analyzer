@@ -17,7 +17,8 @@ public class ApplicationRunner {
         String directory = config.getDirectory();
         if (directory != null) {
             FocalLengthAnalyzer focalLengthAnalyzer = new FocalLengthAnalyzer();
-            Collection<FocalLengthResult> results = focalLengthAnalyzer.getFocalLengthUsage(directory, config.isSplitByCamera());
+            Collection<FocalLengthResult> results = focalLengthAnalyzer.getFocalLengthUsage(directory,
+                    config.isSplitByCamera(), config.isFullFrameEquivalent());
 
             OutputWriter output;
             if (config.getOutputFile().isBlank()) {

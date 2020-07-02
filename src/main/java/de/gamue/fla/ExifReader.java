@@ -13,15 +13,23 @@ import java.util.Collection;
 public class ExifReader {
 
     public float getFocalLength(File image) throws ImageProcessingException, IOException, MetadataException {
+        return getExifData(image, ExifSubIFDDirectory.TAG_FOCAL_LENGTH);
+    }
+
+    public float getFocalLength35mmEquivalent(File image) throws ImageProcessingException, IOException, MetadataException {
+        return getExifData(image, ExifSubIFDDirectory.TAG_35MM_FILM_EQUIV_FOCAL_LENGTH);
+    }
+
+    private float getExifData(File image, int exifCode) throws ImageProcessingException, IOException, MetadataException {
         Metadata metadata = ImageMetadataReader.readMetadata(image);
         Collection<ExifSubIFDDirectory> directories = metadata.getDirectoriesOfType(ExifSubIFDDirectory.class);
         if (!directories.isEmpty()) {
             for (ExifSubIFDDirectory directory : directories) {
-                if (directory.containsTag(ExifSubIFDDirectory.TAG_FOCAL_LENGTH)) {
-                    return directory.getFloat(ExifSubIFDDirectory.TAG_FOCAL_LENGTH);
+                if (directory.containsTag(exifCode)) {
+                    return directory.getFloat(exifCode);
                 }
             }
-            throw new MetadataException("Focal Length not set in exif data.");
+            throw new MetadataException("Requested exif data not set.");
         } else {
             throw new MetadataException("No ExifSubIFDDirectory present.");
         }

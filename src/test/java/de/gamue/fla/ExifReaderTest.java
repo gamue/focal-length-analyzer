@@ -22,8 +22,8 @@ class ExifReaderTest {
 
     @Test
     void getFocalLength() throws ImageProcessingException, IOException, MetadataException {
-        float focalLength = reader.getFocalLength(getTestImageDslr());
-        assertEquals(46, focalLength);
+        assertEquals(46, reader.getFocalLength(getTestImageDslr()));
+        assertEquals(4.15f, reader.getFocalLength(getTestImagePhone()));
     }
 
     @Test
@@ -36,6 +36,12 @@ class ExifReaderTest {
     void getFocalLength_NoExifData() {
         File image = getTestImageBlank();
         Assertions.assertThrows(MetadataException.class, () -> reader.getFocalLength(image));
+    }
+
+    @Test
+    void getFocalLength35mm() throws ImageProcessingException, IOException, MetadataException {
+        assertEquals(69, reader.getFocalLength35mmEquivalent(getTestImageDslr()));
+        assertEquals(52, reader.getFocalLength35mmEquivalent(getTestImagePhone()));
     }
 
     @Test

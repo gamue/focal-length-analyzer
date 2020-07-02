@@ -30,7 +30,8 @@ public class FocalLengthAnalyzer {
      * @return collection of analysis result holding the used focal lengths and their amount.
      * If the result is not split by camera the list has only one item.
      */
-    public Collection<FocalLengthResult> getFocalLengthUsage(String directory, boolean splitByCamera) {
+    public Collection<FocalLengthResult> getFocalLengthUsage(String directory, boolean splitByCamera,
+                                                             boolean isFullFrameEquivalent) {
         ExifReader exifReader = new ExifReader();
         Map<String, FocalLengthResult> cameraToResult = new HashMap<>();
 
@@ -42,7 +43,7 @@ public class FocalLengthAnalyzer {
                     try {
                         File image = file.toFile();
                         String cameraName = getCameraName(exifReader, image, splitByCamera);
-                        float focalLength = exifReader.getFocalLength(image);
+                        float focalLength = getFocalLength(exifReader, image, isFullFrameEquivalent);
 
                         FocalLengthResult result = cameraToResult.getOrDefault(cameraName, new FocalLengthResult(cameraName));
                         result.increaseAmount(focalLength);
@@ -57,6 +58,14 @@ public class FocalLengthAnalyzer {
                 });
 
         return cameraToResult.values();
+    }
+
+    private float getFocalLength(ExifReader exifReader, File image, boolean isFullFrameEquivalent) throws ImageProcessingException, IOException, MetadataException {
+        if (isFullFrameEquivalent) {
+            return exifReader.getFocalLength35mmEquivalent(image);
+        } else {
+            return exifReader.getFocalLength(image);
+        }
     }
 
     private String getCameraName(ExifReader exifReader, File image, boolean splitByCamera) throws ImageProcessingException, IOException {

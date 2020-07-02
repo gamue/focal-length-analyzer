@@ -21,6 +21,9 @@ public class CliConfig {
     @Option(name = "-s", usage = "if set to true, the result will be split by used camera (default: false).")
     private boolean splitByCamera = false;
 
+    @Option(name = "-ff", usage = "if set to true, the focal lengths are returned in 35mm film equivalent (default: false).")
+    private boolean fullFrameEquivalent = false;
+
     public static CliConfig read(final String... args) {
         log.info("CLI arguments: {}", Arrays.toString(args));
 
