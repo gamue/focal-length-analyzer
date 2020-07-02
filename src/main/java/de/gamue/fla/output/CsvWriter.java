@@ -5,18 +5,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
+@AllArgsConstructor
 public class CsvWriter implements OutputWriter {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CsvWriter.class);
-
     private String outputFile;
-
-    public CsvWriter(String outputFile) {
-        this.outputFile = outputFile;
-    }
 
     @Override
     public void write(Map<Float, Integer> focalLengthToAmount) {
@@ -29,9 +25,9 @@ public class CsvWriter implements OutputWriter {
         try {
             Files.write(path, stringBuilder.toString().getBytes());
         } catch (IOException e) {
-            LOGGER.error("Error while writing result to file.", e);
+            log.error("Error while writing result to file.", e);
         }
 
-        LOGGER.info("Analysis result written to {}", path);
+        log.info("Analysis result written to {}", path);
     }
 }

@@ -11,12 +11,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class FocalLengthAnalyzer {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(FocalLengthAnalyzer.class);
 
     /**
      * Analyzes the image files in the given directory, including all subdirectories, and return information how often a
@@ -30,7 +28,7 @@ public class FocalLengthAnalyzer {
         Map<Float, Integer> focalLengthToAmount = new TreeMap<>();
 
         List<Path> files = getFilesToCheck(directory);
-        LOGGER.info("found {} files in directories.", files.size());
+        log.info("found {} files in directories.", files.size());
 
         files.forEach(
                 file -> {
@@ -41,9 +39,9 @@ public class FocalLengthAnalyzer {
                         focalLengthToAmount.put(focalLength, amount);
                     } catch (ImageProcessingException | IOException | MetadataException e) {
                         // no image file or no exif data present
-                        LOGGER.debug("could not read exif data from file: " + file.toString(), e);
+                        log.debug("could not read exif data from file: " + file.toString(), e);
                     } catch (Exception e) {
-                        LOGGER.error("error while reading file: " + file.toString(), e);
+                        log.error("error while reading file: " + file.toString(), e);
                     }
                 });
 
@@ -54,7 +52,7 @@ public class FocalLengthAnalyzer {
         try {
             return Files.walk(Paths.get(directory)).filter(Files::isRegularFile).collect(Collectors.toList());
         } catch (IOException e) {
-            LOGGER.error("Error while resolving files to check.");
+            log.error("Error while resolving files to check.");
             return Collections.emptyList();
         }
     }

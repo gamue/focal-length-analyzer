@@ -4,15 +4,13 @@ import de.gamue.fla.output.ConsoleWriter;
 import de.gamue.fla.output.CsvWriter;
 import de.gamue.fla.output.OutputWriter;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ApplicationRunner {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationRunner.class);
-
     public static void main(String[] args) {
-        LOGGER.info("Application started.");
+        log.info("Application started.");
 
         CliConfig config = CliConfig.read(args);
 
@@ -29,7 +27,7 @@ public class ApplicationRunner {
             }
             output.write(focalLengthToAmount);
         }
-        LOGGER.info("Application ended.");
+        log.info("Application ended.");
     }
 
 }
